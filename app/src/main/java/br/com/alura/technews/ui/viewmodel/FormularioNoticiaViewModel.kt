@@ -11,4 +11,8 @@ class FormularioNoticiaViewModel(private val repository: NoticiaRepository) : Vi
         return if (noticia.id > 0) repository.edita(noticia)
         else repository.salva(noticia)
     }
+
+    fun buscaPorId(noticiaId: Long): LiveData<Noticia?> {
+        return repository.buscaPorId(noticiaId)
+    }
 }

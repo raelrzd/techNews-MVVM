@@ -1,4 +1,3 @@
-
 package br.com.alura.technews.ui.activity
 
 import android.content.Intent
@@ -6,12 +5,17 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import br.com.alura.technews.R
 import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.ui.activity.extensions.mostraErro
-import kotlinx.android.synthetic.main.activity_visualiza_noticia.*
+import br.com.alura.technews.ui.viewmodel.VisualizaNoticiaViewModel
+import br.com.alura.technews.ui.viewmodel.factory.VisualizaNoticiaViewModelFactory
+import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_texto
+import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_titulo
 
 private const val NOTICIA_NAO_ENCONTRADA = "Notícia não encontrada"
 private const val TITULO_APPBAR = "Notícia"
@@ -22,9 +26,13 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
     private val noticiaId: Long by lazy {
         intent.getLongExtra(NOTICIA_ID_CHAVE, 0)
     }
-    private val repository by lazy {
-        NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
+
+    private val viewModel by lazy {
+        val repository = NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
+        val factory = VisualizaNoticiaViewModelFactory(noticiaId, repository)
+        ViewModelProviders.of(this, factory).get(VisualizaNoticiaViewModel::class.java)
     }
+
     private lateinit var noticia: Noticia
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +61,7 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
     }
 
     private fun buscaNoticiaSelecionada() {
-        repository.buscaPorId(noticiaId, quandoSucesso = { noticiaEncontrada ->
+        viewModel.buscaPorId(noticiaId).observe(this, Observer { noticiaEncontrada ->
             noticiaEncontrada?.let {
                 this.noticia = it
                 preencheCampos(it)
@@ -75,10 +83,9 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
 
     private fun remove() {
         if (::noticia.isInitialized) {
-            repository.remove(noticia, quandoSucesso = {
-                finish()
-            }, quandoFalha = {
-                mostraErro(MENSAGEM_FALHA_REMOCAO)
+            viewModel.remove().observe(this, Observer { resource ->
+                if (resource.erro == null) finish()
+                else mostraErro(MENSAGEM_FALHA_REMOCAO)
             })
         }
     }
