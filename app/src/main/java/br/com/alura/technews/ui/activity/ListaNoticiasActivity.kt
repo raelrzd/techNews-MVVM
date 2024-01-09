@@ -40,10 +40,6 @@ class ListaNoticiasActivity : AppCompatActivity() {
         title = TITULO_APPBAR
         configuraRecyclerView()
         configuraFabAdicionaNoticia()
-
-
-        Log.i("raeldev", viewModel.toString())
-
     }
 
     override fun onResume() {
@@ -70,7 +66,6 @@ class ListaNoticiasActivity : AppCompatActivity() {
 
     private fun buscaNoticias() {
         viewModel.buscaTodos().observe(this, Observer {
-            Log.i("raeldev", "buscaNoticias: atualizando activity")
             adapter.atualiza(it)
         })
     }
