@@ -57,7 +57,7 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
     }
 
     private fun buscaNoticiaSelecionada() {
-        viewModel.buscaPorId(noticiaId).observe(this, Observer { noticiaEncontrada ->
+        viewModel.noticiaEncontrada.observe(this, Observer { noticiaEncontrada ->
             noticiaEncontrada?.let {
                 this.noticia = it
                 preencheCampos(it)
