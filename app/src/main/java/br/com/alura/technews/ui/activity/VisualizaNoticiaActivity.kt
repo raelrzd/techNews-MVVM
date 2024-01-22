@@ -16,6 +16,7 @@ import br.com.alura.technews.ui.viewmodel.VisualizaNoticiaViewModel
 import br.com.alura.technews.ui.viewmodel.factory.VisualizaNoticiaViewModelFactory
 import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_texto
 import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_titulo
+import org.koin.android.ext.android.inject
 
 private const val NOTICIA_NAO_ENCONTRADA = "Notícia não encontrada"
 private const val TITULO_APPBAR = "Notícia"
@@ -23,12 +24,13 @@ private const val MENSAGEM_FALHA_REMOCAO = "Não foi possível remover notícia"
 
 class VisualizaNoticiaActivity : AppCompatActivity() {
 
+    private val database: AppDatabase by inject()
     private val noticiaId: Long by lazy {
         intent.getLongExtra(NOTICIA_ID_CHAVE, 0)
     }
 
     private val viewModel by lazy {
-        val repository = NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
+        val repository = NoticiaRepository(database.noticiaDAO)
         val factory = VisualizaNoticiaViewModelFactory(noticiaId, repository)
         ViewModelProviders.of(this, factory).get(VisualizaNoticiaViewModel::class.java)
     }
