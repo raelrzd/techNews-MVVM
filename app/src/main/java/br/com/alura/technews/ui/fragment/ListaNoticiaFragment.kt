@@ -19,7 +19,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carregar as novas notícias"
 
-class FragmentListaNoticia : Fragment() {
+class ListaNoticiaFragment : Fragment() {
 
     private val viewModel: ListaNoticiasViewModel by viewModel()
     private val adapter by lazy {

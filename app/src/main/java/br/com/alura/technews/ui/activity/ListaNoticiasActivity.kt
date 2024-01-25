@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
-import br.com.alura.technews.ui.fragment.FragmentListaNoticia
+import br.com.alura.technews.ui.fragment.ListaNoticiaFragment
 
 private const val TITULO_APPBAR = "Notícias"
 
@@ -20,7 +20,7 @@ class ListaNoticiasActivity : AppCompatActivity() {
 
     override fun onAttachFragment(fragment: Fragment?) {
         super.onAttachFragment(fragment)
-        if (fragment is FragmentListaNoticia) {
+        if (fragment is ListaNoticiaFragment) {
             fragment.quandoSelecionaNoticia = {
                 abreVisualizadorNoticia(it)
             }
