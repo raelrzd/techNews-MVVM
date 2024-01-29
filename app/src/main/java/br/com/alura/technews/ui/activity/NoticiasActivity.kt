@@ -1,7 +1,6 @@
 package br.com.alura.technews.ui.activity
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -10,6 +9,7 @@ import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.activity.extensions.transacaoFragment
 import br.com.alura.technews.ui.fragment.ListaNoticiaFragment
 import br.com.alura.technews.ui.fragment.VisualizaNoticiaFragment
+import kotlinx.android.synthetic.main.activity_noticias.activity_noticias_container_secundario
 
 private const val TAG_FRAGMENT_VISUALIZA_NOTICIA = "visualizaNoticia"
 
@@ -83,7 +83,7 @@ class NoticiasActivity : AppCompatActivity() {
     private fun setVisualizaNoticiaFragment(fragment: VisualizaNoticiaFragment) {
         transacaoFragment {
             val container =
-                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                if (activity_noticias_container_secundario != null) {
                     R.id.activity_noticias_container_secundario
                 } else {
                     addToBackStack(null)
