@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_lista_noticia.fragment_lista_noti
 import kotlinx.android.synthetic.main.fragment_lista_noticia.fragment_lista_noticias_recyclerview
 import org.koin.android.viewmodel.ext.android.viewModel
 
+private const val TITULO_APPBAR = "Notícias"
 private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carregar as novas notícias"
 
 class ListaNoticiaFragment : Fragment() {
@@ -29,8 +30,8 @@ class ListaNoticiaFragment : Fragment() {
     var quandoAdicionaNoticia: () -> Unit = {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        buscaNoticias()
         super.onCreate(savedInstanceState)
+        buscaNoticias()
     }
 
     override fun onCreateView(
@@ -43,6 +44,7 @@ class ListaNoticiaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.title = TITULO_APPBAR
         configuraRecyclerView()
         configuraFabAdicionaNoticia()
     }
