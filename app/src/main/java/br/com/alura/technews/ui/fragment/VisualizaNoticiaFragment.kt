@@ -30,6 +30,7 @@ class VisualizaNoticiaFragment : Fragment() {
     }
     private val viewModel: VisualizaNoticiaViewModel by viewModel() { parametersOf(noticiaId) }
     var quandoSelecionaMenuEdicao: (noticia: Noticia) -> Unit = {}
+    var quandoFinalizaTela: () -> Unit = {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +59,12 @@ class VisualizaNoticiaFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.visualiza_noticia_menu_edita -> viewModel.noticiaEncontrada.value?.let { quandoSelecionaMenuEdicao(it) }
+            R.id.visualiza_noticia_menu_edita -> viewModel.noticiaEncontrada.value?.let {
+                quandoSelecionaMenuEdicao(
+                    it
+                )
+            }
+
             R.id.visualiza_noticia_menu_remove -> remove()
         }
         return super.onOptionsItemSelected(item)
@@ -75,7 +81,7 @@ class VisualizaNoticiaFragment : Fragment() {
     private fun verificaIdDaNoticia() {
         if (noticiaId == 0L) {
             mostraErro(NOTICIA_NAO_ENCONTRADA)
-            activity?.finish()
+            quandoFinalizaTela()
         }
     }
 
@@ -86,7 +92,7 @@ class VisualizaNoticiaFragment : Fragment() {
 
     private fun remove() {
         viewModel.remove().observe(this, Observer { resource ->
-            if (resource.erro == null) activity?.onBackPressed()
+            if (resource.erro == null) quandoFinalizaTela()
             else mostraErro(MENSAGEM_FALHA_REMOCAO)
         })
     }
